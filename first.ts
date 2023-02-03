@@ -20,3 +20,35 @@ const arr2 = [123, 456]
 const arr3: [number, number, string] = [123, 456, 'hello'];
 
 const obj = { lat: 37.5, lon: 127.5 };
+
+// <JS 변환 시 사라지는 부분 파악>
+
+const ff: true = true; // ff: true 부분이 사라짐
+
+type Add = () => number;
+interface Minus { } // 인터페이스
+Array<string> // 제네릭
+
+// 이것들은 나중에 JS로 변환되면 다 사라질 것들이다.
+// * 타입이 적혀있는 부분을 명확히 구분하고, 어디가 없어지는지까지 정확히 알아야함. 왜냐!
+// 사라지는 부분을 지웠을 때, 올바르게 실행되는 자바스크립트 코드여야 되기 때문에
+
+// function minus(a:number, b:number):number;
+// function minus(a, b) {
+//     return a - b;
+// }
+// >> 이런 케이스도 존재한다 위에는 타입이고 밑에는 실제 코드
+// 실제로 JS로 변환시키면 위에 타입 부분은 사라지고 밑에 코드만 남게된다.
+
+// as as
+let aa = 123;
+// aa = 'hello' // 이러면 error
+// 이런 문자열 형식을 억지로 다른 애로 바꿀 수 있다 어떻게?
+aa = 'hello' as unknown as number; // 이러면 error 안 남.
+
+// 이렇게 as라는 특별한 키워드가 있어서 앞에 타입을 강제로 다른 애로 바꿔줄 수 있는데
+// 얘도 변환하게 되면 사라진다. 그래서
+
+// let aa = 123;
+// aa ='hello'
+// 이렇게 남게 된다.
