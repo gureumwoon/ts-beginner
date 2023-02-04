@@ -57,3 +57,71 @@ const head5 = document.querySelector('#head');
 head5.innerHTML = 'hello'
 // 이렇게 써도 개체가 null인 것 같다고 typescript가 알려줌.
 // if의 사용은 스스로 미리 방지하기 위해 사용
+
+// <원시 래퍼 타입,>
+
+const aaa: string = 'hello';
+const bbb: String = 'hell';
+
+// string과 String은 서로 다른 타입이다. 대문자 String도 일단 에러는 나지 않지만
+// 일반 문자 데이터 타입은 아니다 문자열 데이터 타입은 소문자 string을 사용해야 한다.
+// String은 래퍼 개체야. 이 스트링은 언제 쓰냐
+// new String()할 때 이 String이야. 하지만 이거 실제로 쓰는 경우 거의 없음.
+
+// <템플릿리터럴>
+
+type World = "world"
+const cc: World = 'world'
+
+const dd = `hello ${a}`;
+
+// 타입을 커스텀하게 만들어 주는 기능.(type키워드로) 그리거 ctrl+space 누르면 자동완성 추천을 해준다.
+
+// 이런 경우도 있어
+
+type World2 = "world" | 'hell'
+type Greeting = `hello ${World2}`;
+
+// 위에 const dd처럼 타입에서도 이렇게 사용 가능 근데 파이프 사용으로 선택지가 두 개로 나뉘어 지면
+// 자동완성 추천에서 'hello world'와 'hello hell' 두 개를 추천해준다. 
+
+// 근데 위에같이 선택지가 두 개가 아니고
+type Greeting2 = `hello ${string}`;
+// 그냥 string이었다 그러면 추천이 안 뜨겠지 왜냐면 모르니까 그냥 모든 문자열이 다 될 수 있으니까.
+const ee: Greeting2 = 'hello world';
+
+// 그래서 나중에 타입을 정교하게 만들때는 | (or이라는 뜻) 형태로 쓰인다.
+
+// <rest parameter>
+
+// 레스트 매개 변수는 매개 변수의 수를 정해 놓지 않고 사용자가 넣고 싶은 독립 변수의 수만큼 넣을 수 있도록 도와주는 기능이다.
+// 레스트 매개 변수는 배열이기 때문에 타입 선언 시 [] 대괄호를 꼭 넣어주어야 해.
+// 함수가 있는데, 함수의 파라미터에 몇개의 인자가 들어올지 모르는 상황이다. 
+// 이럴 때 사용하는 것이 rest parameter이다. 문법은 spread operator를 사용한다. 
+
+
+function rest(...args: string[]) {
+    console.log(args); // ['1','2','3']
+}
+
+function rest(a, ...args: string[]) {
+    console.log(a, args); // 1,[2,3]
+}
+
+// 예를들어, rest(1, 2, 3); 이렇게 있으면 위에 함수 안의 console.log가 [1,2,3]이 되잖아. 
+// 모든 매개변수들을 다 이렇게 받는데 지금 rest 타입이 string으로 되어 있으니까 
+// 방금 rest(1,2,3)도 rest('1','2','3')이 되어야 한다.
+
+// 이런식으로 해도 되겠지
+// 다양한 형식이 있는데 이게 타입 때문에 엄청 헷갈려 안 헷갈릴 수 있는 방법은 
+// 타입을 지워봐 그리고 잠깐 JS정신으로 돌아와서 a는 첫 번째 매개변수이고 ...args얘는 나머지 매개변수구나 이렇게 정신을 차린 다음에 다시 타입을 붙여봐 그럼 안 헷갈릴 수 있어.
+
+// <튜플>
+
+const type: [string, number] = ['1', 1]
+type[2] = 'hello' // 세 번째 자리에 'hello' 넣으려고 해서 에러남
+
+type.push('hello')
+
+// 웃긴 게 타입스크립트가 바보라서 typle[2] = 'hello' 얘는 안 되고 typle.push('hello') 얘는 돼
+// 둘 다 세 번째로 요소를 추가 하는 건 똑같아
